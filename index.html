@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            table {
+                background: lightblue;
+            }
+            td {
+                height: 50px;
+                padding: 5px 10px;
+            }
+            td:first-child {
+                text-align: right;
+                width: 200px;
+            }
+            td:nth-child(2) {
+                width: 200px;
+            }
+            td:nth-child(3) {
+                position: relative;
+                width: 50px;
+            }
+
+            td:nth-child(3) svg {
+                height: 30px;
+                left: 50%;
+                position: absolute;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+            td:nth-child(3) svg:hover {
+                cursor: pointer;
+            }
+            td:nth-child(3) svg:hover path {
+                fill: chartreuse;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Time Utility</h1>
+        <input id="input" type="text" style="width: 200px">
+        <table>
+            <tr>
+                <td>milliseconds</td>
+                <td id="ms"><input></td>
+                <td id="copy-ms"><svg data-target="ms" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 48"><defs><style>.cls-1{fill:#418fde;}</style></defs><title>Asset 945</title><g id="Layer_2" data-name="Layer 2"><g id="Icons"><path class="cls-1" d="M27.78,41a.781.781,0,0,0-.78.78V48l7-7H27.78Z"/><path class="cls-1" d="M25,10V1a1.00291,1.00291,0,0,0-1-1H1A1.00291,1.00291,0,0,0,0,1V34a1.00291,1.00291,0,0,0,1,1H6V14a3.99891,3.99891,0,0,1,4-4Z"/><path class="cls-1" d="M33,13H10a1.00291,1.00291,0,0,0-1,1V47a1.00291,1.00291,0,0,0,1,1H25V41.78A2.78688,2.78688,0,0,1,27.78,39H34V14A1.00291,1.00291,0,0,0,33,13ZM29,35H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Zm0-6H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Zm0-6H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Z"/></g></g></svg></td>
+            </tr>
+            <tr>
+                <td>seconds</td>
+                <td id="seconds"><input></td>
+                <td id="copy-seconds"><svg data-target="seconds" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 48"><defs><style>.cls-1{fill:#418fde;}</style></defs><title>Asset 945</title><g id="Layer_2" data-name="Layer 2"><g id="Icons"><path class="cls-1" d="M27.78,41a.781.781,0,0,0-.78.78V48l7-7H27.78Z"/><path class="cls-1" d="M25,10V1a1.00291,1.00291,0,0,0-1-1H1A1.00291,1.00291,0,0,0,0,1V34a1.00291,1.00291,0,0,0,1,1H6V14a3.99891,3.99891,0,0,1,4-4Z"/><path class="cls-1" d="M33,13H10a1.00291,1.00291,0,0,0-1,1V47a1.00291,1.00291,0,0,0,1,1H25V41.78A2.78688,2.78688,0,0,1,27.78,39H34V14A1.00291,1.00291,0,0,0,33,13ZM29,35H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Zm0-6H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Zm0-6H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Z"/></g></g></svg></td>
+            </tr>
+        </table>
+        <script>
+            window.app = {
+                state: {
+                    input: "",
+                    ms: "",
+                    seconds: ""
+                },
+                assets: {
+                    copy: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 48"><defs><style>.cls-1{fill:#418fde;}</style></defs><title>Asset 945</title><g id="Layer_2" data-name="Layer 2"><g id="Icons"><path class="cls-1" d="M27.78,41a.781.781,0,0,0-.78.78V48l7-7H27.78Z"/><path class="cls-1" d="M25,10V1a1.00291,1.00291,0,0,0-1-1H1A1.00291,1.00291,0,0,0,0,1V34a1.00291,1.00291,0,0,0,1,1H6V14a3.99891,3.99891,0,0,1,4-4Z"/><path class="cls-1" d="M33,13H10a1.00291,1.00291,0,0,0-1,1V47a1.00291,1.00291,0,0,0,1,1H25V41.78A2.78688,2.78688,0,0,1,27.78,39H34V14A1.00291,1.00291,0,0,0,33,13ZM29,35H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Zm0-6H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Zm0-6H14a1,1,0,0,1,0-2H29a1,1,0,0,1,0,2Z"/></g></g></svg>'
+                }
+            };
+
+            document.getElementById("input").addEventListener("input", function () {
+                console.log("starting");
+                app.state.input = document.getElementById("input").value;
+                render();                
+            });
+
+            const svgs = document.querySelectorAll("svg");
+            for (let i = 0; i < svgs.length; i++) {
+                const svg = svgs[i];
+                const state_target = svg.getAttribute("data-target");
+                svg.addEventListener("click", function () {
+                    var copyText = document.querySelector("#" + state_target + " input");
+                    // Select the text field
+                    copyText.select();
+                    copyText.setSelectionRange(0, 99999); // For mobile devices
+                    navigator.clipboard.writeText(copyText.value);
+                });
+            }
+
+            function render() {
+                const date = new Date(app.state.input);
+                const time_ms = date.getTime();
+                document.querySelector("#ms input").value = time_ms;
+                const time_seconds = time_ms / 1000;
+                document.querySelector("#seconds input").value = time_seconds;
+            }
+        </script>
+    </body>
+</html>
